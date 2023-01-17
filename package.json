@@ -1,6 +1,6 @@
 {
   "name": "netscape-cookies-parser",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A small light weight library that parses Netscape HTTP Cookies ",
   "main": "dist/main.js",
   "directories": {
