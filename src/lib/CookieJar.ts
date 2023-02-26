@@ -14,12 +14,12 @@ export class CookieJar {
     }
 
     /**
-     * Loads a cookie file from the provided pyth
+     * Loads a cookie file from the provided path
      * @param String path 
      * @returns File Content in UTF8 format
      */
 
-    load(path: string) {
+    load(path: string): string {
         if (existsSync(path)) {
             this._cookies = readFileSync(path, "utf8");
             return this._cookies;
@@ -33,7 +33,7 @@ export class CookieJar {
      * @returns An array of Cookies[]
      */
 
-    parse<Cookies>() {
+    parse(): Cookies[] {
 
         let cookies: Cookies[] = [];
         let lines = this._cookies.split("\n");
@@ -60,9 +60,9 @@ export class CookieJar {
                 domain: domain,
                 path: path,
                 flag: flag,
-                expires: expires,
+                expires: Number(expires),
                 secure: secure === "TRUE",
-            } as Cookies);
+            });
         }
         return cookies;
     }
@@ -72,16 +72,9 @@ export class CookieJar {
      * @returns string
      */
 
-    toString() {
-        const cookies = this.parse<Cookies>()
-        let record: Record<string, string> = {};
-
-        for (const cookie of cookies) {
-            record[cookie.name] = cookie.value;
-        }
-
-        return Object.entries(record)
-            .map(([key, value]) => `${key}=${value}`)
-            .join("; ");
+    toString(): string {
+        const cookies = this.parse();
+        const cookieStrings = cookies.map(cookie => `${cookie.name}=${cookie.value}`);
+        return cookieStrings.join('; ');
     }
 }
